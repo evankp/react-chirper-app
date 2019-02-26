@@ -1,4 +1,6 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
+# Pycharm file folder
+.idea/
 
 # dependencies
 /node_modules
