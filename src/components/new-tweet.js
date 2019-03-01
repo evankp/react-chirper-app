@@ -1,6 +1,8 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {handleSaveTweet} from "../actions/tweets";
 
-export default class NewTweet extends React.Component {
+class NewTweet extends React.Component {
     state = {
         text: ''
     };
@@ -14,7 +16,9 @@ export default class NewTweet extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
 
-        // TODO: Add submit logic
+        this.props.dispatch(handleSaveTweet(this.state.text, this.props.id));
+
+        this.setState({text: ''})
     };
 
     render() {
@@ -27,8 +31,12 @@ export default class NewTweet extends React.Component {
                     <textarea className="textarea" value={text}
                               onChange={this.handleChange} maxLength={280}
                               placeholder="What's up?"/>
+
+                    <button className="btn" type="submit" disabled={!this.state.text}>Submit Tweet</button>
                 </form>
             </div>
         )
     }
 }
+
+export default connect()(NewTweet)

@@ -1,4 +1,4 @@
-import {LIKE_TWEET, RECEIVE_TWEETS} from "../actions/tweets";
+import {LIKE_TWEET, NEW_TWEET, RECEIVE_TWEETS} from "../actions/tweets";
 
 export default function tweets(state = {}, action) {
     switch (action.type) {
@@ -17,6 +17,25 @@ export default function tweets(state = {}, action) {
                         ? state[action.id].likes.filter(uid => uid !== action.authedUser)
                         : [...state[action.id].likes, action.authedUser]
                 }
+            };
+
+        case NEW_TWEET:
+            const {tweet} = action;
+            let replyingTo = {};
+
+            if (tweet.replyingTo !== null) {
+                replyingTo = {
+                    [tweet.replyingTo]: {
+                        ...state[tweet.replyingTo],
+                        replies: [...state[tweet.replyingTo].replies, tweet.id]
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                [tweet.id]: tweet,
+                ...replyingTo
             };
 
         default:
